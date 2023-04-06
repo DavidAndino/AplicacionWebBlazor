@@ -1,0 +1,55 @@
+﻿<!--agregando la ruta por medio de  la etiqueta "@Page" esta ruta se muestra en la barra de direcciones del navegador-->
+@page "/Usuarios"
+@using Modelos;
+
+<h3>Lista de usuarios</h3>
+
+<!-- validando que la lista no este vacia-->
+@if (lista == null)
+{
+    <p>No se han registrado usuarios en el sistema</p>
+}
+else
+{
+    <table class="table">
+        <!--Agregando encabezado-->
+        <thead>
+            <!--Agregando fila de encabezado con etiqueta "tr" y columnas con etiqueta "th"-->
+            <tr>
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>FechaCreacion</th>
+                <th>Activo</th>
+                <th>Foto</th>
+            </tr>
+        </thead>
+        <!--Agregando cuerpo de la pagina-->
+        <tbody> 
+            @foreach (Usuario user in lista)
+            {
+                <tr>
+                    <th>@user.UserCode</th>
+                    <th>@user.Name</th>
+                    <th>@user.Mail</th>
+                    <th>@user.Role</th>
+                    <th>@user.CreationDate</th>
+                    @if (user.Active)
+                    {
+                        <th> <span class="oi oi-circle-check" style= "color: deepskyblue;"></span></th>
+                    }
+                    else
+                    {
+                        <th><span class=" oi oi-circle-x" style= "color: red;"></span></th>
+                    }
+                    <th>@user.Photo</th>
+                    <th>
+                        <a class= "btn btn-success" href="@($"/Usuarios/Editar")">Editar</a><!--"Editar" es el boton que se  aniade a la par  de  cada  usuario -->
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<!--un componente de blazor tiene dos componentes: uno de html y uno de c#-->
