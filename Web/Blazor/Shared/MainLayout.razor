@@ -9,6 +9,20 @@
 
     <main>
         <div class="top-row px-4">
+            <AuthorizeView>
+                <!--si esta autorizado (porque esta activo o existe) el usuario, aparece esteo en la web:-->
+                <Authorized>
+                    <!--Accediendo al codigo de usuario que inicio sesion-->
+                    <span class="ml-md-auto"> Usuario Conectado: @context.User.Claims.First().Value
+                        <!--esta etiqueta llevara al metodo HttpGet /salir del controller-->
+                        <a href="/salir">Cerrar Sesion</a>
+                    </span>
+                </Authorized>
+                <!--si no (porque no esta activo o no existe), aparece esto-->
+                <NotAuthorized>
+                    <a href="login">Iniciar Sesión</a>
+                </NotAuthorized>
+            </AuthorizeView>
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
