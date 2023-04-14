@@ -38,7 +38,7 @@ namespace Datos.Repositorios
             return resultado;
         }
 
-        public async Task<bool> EliminarAsync(string codigo)
+        public async Task<bool> EliminarAsync(string userCode)
         {
             bool resultado = false;
             try
@@ -47,7 +47,7 @@ namespace Datos.Repositorios
                 await _conexion.OpenAsync();
 
                 string sql = "DELETE FROM user WHERE UserCode = @UserCode;";
-                resultado = Convert.ToBoolean(await _conexion.ExecuteAsync(sql, new { codigo }));
+                resultado = Convert.ToBoolean(await _conexion.ExecuteAsync(sql, new { userCode }));
             }
             catch (Exception)
             {
@@ -90,7 +90,7 @@ namespace Datos.Repositorios
             return listaUsers;
         }
 
-        public async Task<Usuario> TraerPorCodigoAsync(string Codigo)
+        public async Task<Usuario> TraerPorCodigoAsync(string userCode)
         {
             Usuario user = new Usuario();
             try
@@ -99,7 +99,7 @@ namespace Datos.Repositorios
                 await _conexion.OpenAsync();
 
                 string sql = "SELECT * FROM user WHERE  UserCode = @UserCode;";
-                user = await _conexion.QueryFirstAsync<Usuario>(sql, new { Codigo });//QueryFirst (metodo Dapper) devuelve un solo resultado, segun el tipo especificado <>
+                user = await _conexion.QueryFirstAsync<Usuario>(sql, new { userCode });//QueryFirst (metodo Dapper) devuelve un solo resultado, segun el tipo especificado <>
             }
             catch (Exception)
             {

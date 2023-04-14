@@ -15,15 +15,15 @@
                     <!--Accediendo al codigo de usuario que inicio sesion-->
                     <span class="ml-md-auto"> Usuario Conectado: @context.User.Claims.First().Value
                         <!--esta etiqueta llevara al metodo HttpGet /salir del controller-->
-                        <a href="/salir">Cerrar Sesion</a>
+                        <a href="/Salir">Cerrar Sesion</a>
                     </span>
                 </Authorized>
                 <!--si no (porque no esta activo o no existe), aparece esto-->
                 <NotAuthorized>
-                    <a href="login">Iniciar Sesión</a>
+                    <a href="Login" style="font-size:24px; font-weight:700" class="ml-md-auto">Iniciar Sesión</a>
                 </NotAuthorized>
             </AuthorizeView>
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            
         </div>
 
         <article class="content px-4">

@@ -1,6 +1,18 @@
 ﻿@page "/"
+<!--llamando al componente"Principal de Blazor: Blazor. nombre de carpeta.nombre de  componente"-->
+<Blazor.Pages.Principal>
 
-<PageTitle>Index</PageTitle>
+</Blazor.Pages.Principal>
 
-<h1>Hallo, Deutchland!</h1>
+<!--Mostrando vista si no ha iniciado sesion-->
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="class = col-xs-1" align="center">
+            <h2 style="font-weight:700">Identifíquese para ingresar al sistema</h2>
+            <span class="oi oi-arrow-thick-bottom" style="font-size:40px"></span>
+            <br/>
+            <a style="color:blue; font-weight:700; font-size:28px;" href="Login" class="ml-md-auto">Iniciar Sesion</a>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
 

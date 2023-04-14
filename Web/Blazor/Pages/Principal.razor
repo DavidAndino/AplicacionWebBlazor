@@ -1,0 +1,16 @@
+﻿<!--este componente se mostrara en la  pagina principal-->
+<AuthorizeView Roles ="Administrador">
+
+    <Authorized Context ="AuthenticationState">
+        <h2>Bienvenido Admin</h2>
+    </Authorized>
+
+</AuthorizeView >
+
+<AuthorizeView Roles="Usuario">
+
+    <Authorized Context="AuthenticationState">
+        <h2>Bienvenido Usuario</h2>
+    </Authorized>
+
+</AuthorizeView>

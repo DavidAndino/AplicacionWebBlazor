@@ -1,9 +1,9 @@
-﻿@page "/login"
+﻿@page "/Login"
 <!--este es el parametro formal de mensaje de error que se puso en el controlador, metodo autenticar-->
-@page "/login/{MensajeError}"
+@page "/Login/{MensajeError}"
 
 <!--aqui se llamara al controlador-->
-<h3>Login</h3>
+<h3>Inicio de Sesión</h3>
 
 <!--si viene un error-->
 @if (MensajeError != null)
@@ -19,8 +19,9 @@
     <div>
         <Label>Contraseña:</Label>
         <input type="password" name="Password" class="form-control col-sm-6  col-md-4"/>
+       
     </div>
-    <buttom class="btn-primary" Ingresar></buttom>
+    <button class="btn btn-primary">Ingresar</button>
 </form>
 
 @code {

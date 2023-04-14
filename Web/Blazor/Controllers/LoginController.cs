@@ -14,7 +14,7 @@ namespace Blazor.Controllers
         private ILoginRepositorio _loginRepositorio;
         private IUsuarioRepositorio _usuarioRepositorio;
 
-        LoginController(Config config)
+        public LoginController(Config config)
         {
             _config = config;
             _loginRepositorio = new LoginRepositorio(config.CadenaConexion);
@@ -61,12 +61,12 @@ namespace Blazor.Controllers
                     else
                     {
                         //mandando a una ruta, en esta caso a la ruta /login, porque no esta activo el user y no se pudo iniciar sesion
-                        return LocalRedirect("/login/El usuario no está activo");
+                        return LocalRedirect("/Login/El usuario no está activo");
                     }
                 }
                 else
                 {
-                    return LocalRedirect("/login/Datos ingresados inválidos");
+                    return LocalRedirect("/Login/Datos ingresados inválidos");
                 }
 
             }
@@ -77,11 +77,11 @@ namespace Blazor.Controllers
         }
 
         //metodo para cerrar la sesion
-        [HttpGet("/salir")]
+        [HttpGet("/Salir")]
         public async Task<IActionResult> cierreSesion()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return LocalRedirect("/login");
+            return LocalRedirect("/Login");
         }
 
     }

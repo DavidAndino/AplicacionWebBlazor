@@ -1,4 +1,70 @@
-﻿@page "/Usuarios/Editar"
-<h3>EditarUsuario</h3>
+﻿<!--este paramatero, "Codigousuario" viene del componente "    "-->
+@page "/Usuarios/Editar/{CodigoUsuario}"
+<AuthorizeView>
+    <Authorized Context="AuthenticationState">
+        <h3>EditarUsuario</h3>
+        <!--usando formulario de Blazor-->
+        <EditForm Model="@user">
+            <!---agreagando anotaciones en los modelos para poder mostar errores de validacion (campos obligatorios etc). Dichas anotaciones se agregan en ciertos objetos de los Modelos->
+                <DataAnnotationsValidator>
+                    <!--Cuando el admin guarde cambios, este data validara que vayan llenos los campos que no pueden ser nulos  (definidos en Modelos, Usuario)-->
+                    <div class="form-group row">
+                    <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                        <label for="UserCode" class="col-sm-2 col-form-label">
+                            Codigo Usuario
+                        </label>
+                        <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                        <div class="col-sm-10">
+                            <label for="UserCode" class="col-form-label">
+                                @user.UserCode
+                            </label>
+                        </div>
+                    </div>
 
+                    <!--nombre-->
+                    <div class="form-group row">
+                        <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                        <label for="Name" class="col-sm-2 col-form-label">
+                            Nombre
+                        </label>
+                        <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                        <div class="col-sm-10">
+                            <InputText id="Name" class="form-control" @bind-Value="user.Name"/>
+                            <!--mostranto mensaje de  error cuando este objeto viene vacio-->
+                            <ValidationMessage For="@(() => user.Name)"/>
+                        </div>
+                    </div>
+
+                    <!--clave-->
+                    <div class="form-group row">
+                        <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                        <label for="Password" class="col-sm-2 col-form-label">
+                            Contraseña
+                        </label>
+                        <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                        <div class="col-sm-10">
+                            <InputText id="Password" typeof="password" class="form-control" @bind-Value="user.Password" />
+                    <ValidationMessage For="@(() => user.Password)" />
+                        </div>
+                    </div>
+
+                    <!--correo-->
+                    <div class="form-group row">
+                        <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                        <label for="Mail" class="col-sm-2 col-form-label">
+                            Correo
+                        </label>
+                        <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                        <div class="col-sm-10">
+                            <InputText id="Mail" typeof="email" class="form-control" @bind-Value="user.Mail" />
+                            
+                        </div>
+                    </div>
+                </DataAnnotationsValidator>
+        </EditForm>
+    </Authorized>
+    <NotAuthorized>
+        <h3>No tiene permisos de administrador</h3>
+    </NotAuthorized>
+</AuthorizeView>
 
