@@ -25,5 +25,42 @@ namespace Blazor.Pages.MisUsuarios
                 user = await usuarioServicio.TraerPorCodigoAsync(CodigoUsuario);//objeto "user" consultado y cargado
             }
         }
+        protected async void Guardar()
+        {
+            //validando que se hayan ingresado datos y que el rol sea distinto de seleccionar 
+            if (string.IsNullOrWhiteSpace(user.UserCode) || string.IsNullOrWhiteSpace(user.Name) ||
+                string.IsNullOrWhiteSpace(user.Password) || string.IsNullOrWhiteSpace(user.Role) ||
+                user.Role == "Seleccionar")//WhiteSpace detecta los  espacios en blanco como vacios y no permite avanzar aun asi
+            {
+                return;//cancelando ejecucion
+            }
+
+            //validando que se hayan guardado cambios si asi fue
+            bool edito = await usuarioServicio.ActualizarAsync(user);
+            if (edito)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+        protected async void Cancelar()
+        {
+
+        }
+        protected async void Eliminar()
+        {
+
+        }
     }
+}
+//creando enumerable  que se reutilizara en el inputselect o comboBox
+enum Roles
+{
+    //estos se mostraran en el inputselect
+    Seleccionar,
+    Administrador,
+    Usuario
 }

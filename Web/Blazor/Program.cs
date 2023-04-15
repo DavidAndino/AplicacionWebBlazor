@@ -1,6 +1,7 @@
 using Blazor;
 using Blazor.Interfaces;
 using Blazor.Servicios;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,9 @@ builder.Services.AddScoped<ILoginServicio, LoginServicio>();//se le pasa la inte
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();//pansando el servicio de tipo de autenticacion
 builder.Services.AddHttpContextAccessor();//sirve para poder acceder a los datos del  usuario que inicio sesion
+builder.Services.AddResponseCompression();
+builder.Services.AddControllers();
+builder.Services.AddSweetAlert2();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
