@@ -8,7 +8,7 @@
 <!--si viene un error-->
 @if (MensajeError != null)
 {
-    <div class="text-danger">MensajeError</div>
+    <div class="text-danger">@MensajeError</div>
 }
 <!--agregando formulario de inicio de desion. Cuando se ejecute este form, se ira  a la ruta  de  "action" que esta en el controller-->
 <form method="post" action="/autenticar/validar">

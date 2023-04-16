@@ -81,7 +81,7 @@ namespace Datos.Repositorios
                 using MySqlConnection _conexion = ConexionDB();
                 await _conexion.OpenAsync();
 
-                string sql = "SELECT FROM user;";
+                string sql = "SELECT * FROM user;";
                 listaUsers = await _conexion.QueryAsync<Usuario>(sql);//Query (metodo Dapper) devuelve un conjunto de resultados, segun el tipo especificado <>
             }
             catch (Exception)
@@ -98,7 +98,7 @@ namespace Datos.Repositorios
                 using MySqlConnection _conexion = ConexionDB();
                 await _conexion.OpenAsync();
 
-                string sql = "SELECT * FROM user WHERE  UserCode = @UserCode;";
+                string sql = "SELECT * FROM user WHERE UserCode = @UserCode;";
                 user = await _conexion.QueryFirstAsync<Usuario>(sql, new { userCode });//QueryFirst (metodo Dapper) devuelve un solo resultado, segun el tipo especificado <>
             }
             catch (Exception)

@@ -2,16 +2,16 @@
 @page "/Usuarios/Editar/{CodigoUsuario}"
 <AuthorizeView>
     <Authorized Context="AuthenticationState">
-        <h3>EditarUsuario</h3>
+        <h3>Editar Usuario</h3>
         <!--usando formulario de Blazor-->
         <EditForm Model="@user">
-            <!---agreagando anotaciones en los modelos para poder mostar errores de validacion (campos obligatorios etc). Dichas anotaciones se agregan en ciertos objetos de los Modelos->
-                <DataAnnotationsValidator>
+            <!---agregando anotaciones en los modelos para poder mostar errores de validacion (campos obligatorios etc). Dichas anotaciones se agregan en ciertos objetos de los Modelos->
+                <DataAnnotationsValidator/>
                     <!--Cuando el admin guarde cambios, este data validara que vayan llenos los campos que no pueden ser nulos  (definidos en Modelos, Usuario)-->
                     <div class="form-group row">
                     <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
                         <label for="UserCode" class="col-sm-2 col-form-label">
-                            Codigo Usuario
+                            Código Usuario
                         </label>
                         <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
                         <div class="col-sm-10">
@@ -21,16 +21,16 @@
                         </div>
                     </div>
 
-                    <!--nombre-->
+                  
                     <div class="form-group row">
-                        <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                       
                         <label for="Name" class="col-sm-2 col-form-label">
                             Nombre
                         </label>
-                        <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                      
                         <div class="col-sm-10">
                             <InputText id="Name" class="form-control" @bind-Value="user.Name"/>
-                            <!--mostranto mensaje de  error cuando este objeto viene vacio-->
+                          
                             <ValidationMessage For="@(() => user.Name)"/>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             Rol
                         </label>
                         <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
-                        <div class="col-sm-10">
+                        <div class="col-sm-2">
                             <InputSelect class="form-control" @bind-Value="user.Role">
                                 <!--insertando las opciones que apareceran mediante el enumerable-->
                                 @foreach (var rol in Enum.GetValues(typeof(Roles)))
@@ -78,6 +78,7 @@
                             <ValidationMessage For="@(() => user.Role)" />
                         </div>
                     </div>
+
                     <!--Fecha de creacion-->
             <div class="form-group row">
                 <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
@@ -100,7 +101,7 @@
                 </label>
                 <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
                 <div class="col-sm-10">
-                    <InputCheckbox class="form-control" @bind-Value="user.Active" />
+                    <InputCheckbox @bind-Value="user.Active" />
                 </div>
             </div>
             <!--Agregando etiqueta div que permite mostrar botones, es decir, agregando botones-->
@@ -111,8 +112,6 @@
                     <input type="submit" class="btn btn-warning" value="Eliminar" @onclick="Eliminar" />
                 </p>
             </div>
-            <!--falta modificar el dataannotation-->
-                </DataAnnotationsValidator>
         </EditForm>
     </Authorized>
     <NotAuthorized>

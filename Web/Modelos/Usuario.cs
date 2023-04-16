@@ -10,6 +10,7 @@ namespace Modelos
         public string UserCode { get; set; }
         [Required(ErrorMessage = "Se requiere el nombre del usuario")]
         public String Name { get; set; }
+        [Required(ErrorMessage = "Se requiere una contraseña")]
         public string Password { get; set; }
         public string Mail { get; set; }
         [Required(ErrorMessage = "Se requiere el rol")]

@@ -1,4 +1,5 @@
 ﻿using Blazor.Interfaces;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Modelos;
 
@@ -12,7 +13,8 @@ namespace Blazor.Pages.MisUsuarios
         [Inject] private NavigationManager navigationManager { get; set; }//sirve para navegar entre rutas
         //el bind creado en el componente "EditarUsuario", le hace saber a este objeto "user" a la hora que el usuario hace cambios en el  sitio web
         private Usuario user = new Usuario();//objeto que se consulatara en la DB para luego poder editar un registro
-        //capturando parametro que se recibe  en la ruta del componente Razo "EditarUsuario"
+        //capturando parametro que se recibe  en la ruta del componente Razor "EditarUsuario"
+        [Inject] private SweetAlertService Swal { get; set; }
         [Parameter] public string CodigoUsuario { get; set; }  //revisar nombre
 
         //sobreescribiendo el metodo  que se carga al cargar el componente, ya que, este metodo se carga al momento  de  cargar el componente
@@ -20,7 +22,7 @@ namespace Blazor.Pages.MisUsuarios
         {
             //consultando a la base de datos si traer el objeto "User" y llenarlo con el objeto antes creado arriba
             //validando que el parametro no venga  vacio
-            if (string.IsNullOrEmpty(CodigoUsuario))
+            if (!string.IsNullOrEmpty(CodigoUsuario))
             {
                 user = await usuarioServicio.TraerPorCodigoAsync(CodigoUsuario);//objeto "user" consultado y cargado
             }
@@ -39,20 +41,43 @@ namespace Blazor.Pages.MisUsuarios
             bool edito = await usuarioServicio.ActualizarAsync(user);
             if (edito)
             {
-
+                await Swal.FireAsync("Éxito", "Usuario Actualizado", SweetAlertIcon.Success);
+                navigationManager.NavigateTo("/Usuarios");//redirijiendo a la pagina de lista de  usuarios
             }
             else
             {
-
+                await Swal.FireAsync("Error", "No se pudo actualizar el usuario", SweetAlertIcon.Error);
             }
         }
         protected async void Cancelar()
         {
-
+            navigationManager.NavigateTo("/Usuarios");
         }
         protected async void Eliminar()
         {
-
+            SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions//si da click en "Si", el result se llena
+            {
+                Title = "¿Seguro que quiere eliminar el usuario seleccionado?",
+                Text = "Esta acción no se podrá revertir",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Sí",
+                CancelButtonText = "No"
+            });
+            //validando que se elimine el registro
+            if (!string.IsNullOrEmpty(result.Value))//si el result esta lleno, significa que se dio click en "Si"
+            {
+                bool elimino = await usuarioServicio.EliminarAsync(user.UserCode);//eliminando registro
+                if (elimino)
+                {
+                    await Swal.FireAsync("Éxito", "El Usuario ha sido eliminado", SweetAlertIcon.Success);
+                    navigationManager.NavigateTo("/Usuarios");//redirijiendo a la pagina de lista de  usuarios
+                }
+                else
+                {
+                    await Swal.FireAsync("Error", "No se pudo eliminar el usuario", SweetAlertIcon.Error);
+                }
+            }
         }
     }
 }
