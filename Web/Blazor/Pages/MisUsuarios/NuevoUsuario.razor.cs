@@ -6,7 +6,7 @@ using Modelos;
 
 namespace Blazor.Pages.MisUsuarios
 {
-    public partial class EditarUsuario
+    public partial class NuevoUsuario
     {
         //inyectando servicio de la interfaz "IusuarioServicio"
         [Inject] private IUsuarioServicio usuarioServicio { get; set; }
@@ -16,19 +16,9 @@ namespace Blazor.Pages.MisUsuarios
         private Usuario user = new Usuario();//objeto que se consulatara en la DB para luego poder editar un registro
         //capturando parametro que se recibe  en la ruta del componente Razor "EditarUsuario"
         [Inject] private SweetAlertService Swal { get; set; }
-        [Parameter] public string CodigoUsuario { get; set; }  //revisar nombre
+        [Parameter] public string CodigoUsuario { get; set; }
 
         string imgUrl = "";
-        //sobreescribiendo el metodo  que se carga al cargar el componente, ya que, este metodo se carga al momento  de  cargar el componente
-        protected override async Task OnInitializedAsync()
-        {
-            //consultando a la base de datos si traer el objeto "User" y llenarlo con el objeto antes creado arriba
-            //validando que el parametro no venga  vacio
-            if (!string.IsNullOrEmpty(CodigoUsuario))
-            {
-                user = await usuarioServicio.TraerPorCodigoAsync(CodigoUsuario);//objeto "user" consultado y cargado
-            }
-        }
 
         private async Task ElegirImagen(InputFileChangeEventArgs e)
         {
@@ -59,55 +49,24 @@ namespace Blazor.Pages.MisUsuarios
                 return;//cancelando ejecucion
             }
 
+            //pasando fecha actual cuando se crea el registro
+            user.CreationDate = DateTime.Now;
+
             //validando que se hayan guardado cambios si asi fue
-            bool edito = await usuarioServicio.ActualizarAsync(user);
-            if (edito)
+            bool inserto = await usuarioServicio.NuevoRegistroAsync(user);
+            if (inserto)
             {
-                await Swal.FireAsync("Éxito", "Usuario Actualizado", SweetAlertIcon.Success);
+                await Swal.FireAsync("Éxito", "Usuario Registrado", SweetAlertIcon.Success);
                 navigationManager.NavigateTo("/Usuarios");//redirijiendo a la pagina de lista de  usuarios
             }
             else
             {
-                await Swal.FireAsync("Error", "No se pudo actualizar el usuario", SweetAlertIcon.Error);
+                await Swal.FireAsync("Error", "No se pudo registrar el usuario", SweetAlertIcon.Error);
             }
         }
         protected async void Cancelar()
         {
             navigationManager.NavigateTo("/Usuarios");
         }
-        protected async void Eliminar()
-        {
-            SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions//si da click en "Si", el result se llena
-            {
-                Title = "¿Seguro que quiere eliminar el usuario seleccionado?",
-                Text = "Esta acción no se podrá revertir",
-                Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true,
-                ConfirmButtonText = "Sí",
-                CancelButtonText = "No"
-            });
-            //validando que se elimine el registro
-            if (!string.IsNullOrEmpty(result.Value))//si el result esta lleno, significa que se dio click en "Si"
-            {
-                bool elimino = await usuarioServicio.EliminarAsync(user.UserCode);//eliminando registro
-                if (elimino)
-                {
-                    await Swal.FireAsync("Éxito", "El Usuario ha sido eliminado", SweetAlertIcon.Success);
-                    navigationManager.NavigateTo("/Usuarios");//redirijiendo a la pagina de lista de  usuarios
-                }
-                else
-                {
-                    await Swal.FireAsync("Error", "No se pudo eliminar el usuario", SweetAlertIcon.Error);
-                }
-            }
-        }
     }
-}
-//creando enumerable  que se reutilizara en el inputselect o comboBox
-enum Roles
-{
-    //estos se mostraran en el inputselect
-    Seleccionar,
-    Administrador,
-    Usuario
 }

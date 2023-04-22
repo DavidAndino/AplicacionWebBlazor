@@ -1,0 +1,137 @@
+﻿@page "/Usuarios/Nuevo"
+<AuthorizeView>
+    <Authorized Context="AuthenticationState">
+        <h3>Nuevo Usuario</h3>
+        <!--usando formulario de Blazor-->
+        <EditForm Model="@user">
+            <!---agregando anotaciones en los modelos para poder mostar errores de validacion (campos obligatorios etc). Dichas anotaciones se agregan en ciertos objetos de los Modelos->
+                <DataAnnotationsValidator/>
+                    <!--Cuando el admin guarde cambios, este data validara que vayan llenos los campos que no pueden ser nulos  (definidos en Modelos, Usuario)-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="UserCode" class="col-sm-2 col-form-label">
+                    Código Usuario
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                   <InputText id="UserCode" class="form-control" @bind-Value = "user.UserCode"/>
+                    <ValidationMessage For="@(() => user.UserCode)" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <label for="Name" class="col-sm-2 col-form-label">
+                    Nombre
+                </label>
+
+                <div class="col-sm-10">
+                    <InputText id="Name" class="form-control" @bind-Value="user.Name" />
+                    <ValidationMessage For="@(() => user.Name)" />
+                </div>
+            </div>
+
+            <!--clave-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="Password" class="col-sm-2 col-form-label">
+                    Contraseña
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                    <InputText id="Password" typeof="password" class="form-control" @bind-Value="user.Password" />
+                    <ValidationMessage For="@(() => user.Password)" />
+                </div>
+            </div>
+
+            <!--correo-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="Mail" class="col-sm-2 col-form-label">
+                    Correo
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                    <InputText id="Mail" typeof="email" class="form-control" @bind-Value="user.Mail" />
+                </div>
+            </div>
+
+            <!--Roles-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="Role" class="col-sm-2 col-form-label">
+                    Rol
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-2">
+                    <InputSelect class="form-control" @bind-Value="user.Role">
+                        <!--insertando las opciones que apareceran mediante el enumerable-->
+                        @foreach (var rol in Enum.GetValues(typeof(Roles)))
+                        {
+                            <option value="@rol">@rol</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => user.Role)" />
+                </div>
+            </div>
+
+            <!--Fecha de creacion-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="CreationDate" class="col-sm-2 col-form-label">
+                    Fecha de Creación
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                    <label for="CreationDate" class="col-form-label">
+                        @user.CreationDate.ToShortDateString()
+                    </label>
+                </div>
+            </div>
+
+            <!--Activo-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="Active" class="col-sm-2 col-form-label">
+                    Activo
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                    <InputCheckbox @bind-Value="user.Active" />
+                </div>
+            </div>
+
+            <!--Foto-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="Photo" class="col-sm-2 col-form-label">
+                    Foto
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                    <InputFile OnChange="@ElegirImagen" />
+                    @if (user.Photo != null)
+                    {
+                        <!--src, source, encargado de pedir la ruta donde esta la imagen. Convirtiendo arreglo de bytes donde esta la foto a base64-->
+                        <img width="250" height="250" src="data: image; base64, @System.Convert.ToBase64String(user.Photo)" />
+                    }
+                    else
+                    {
+                        <img src="@imgUrl" width="250" height="250" />
+                    }
+                </div>
+            </div>
+
+            <!--Agregando etiqueta div que permite mostrar botones, es decir, agregando botones-->
+            <div class="form-group row">
+                <p>
+                    <input type="submit" class="btn btn-primary" value="Guardar" @onclick="Guardar" />
+                    <input type="submit" class="btn btn-danger" value="Cancelar" @onclick="Cancelar" />
+                </p>
+            </div>
+        </EditForm>
+    </Authorized>
+    <NotAuthorized>
+        <h3>No tiene permisos de administrador</h3>
+    </NotAuthorized>
+</AuthorizeView>

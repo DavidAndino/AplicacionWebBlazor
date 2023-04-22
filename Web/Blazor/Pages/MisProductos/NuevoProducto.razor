@@ -1,0 +1,103 @@
+﻿@page "/Productos/Nuevo"
+<AuthorizeView>
+    <Authorized Context="AuthenticationState">
+        <h3>Nuevo Producto</h3>
+        <!--usando formulario de Blazor-->
+        <EditForm Model="@product">
+            <!---agregando anotaciones en los modelos para poder mostar errores de validacion (campos obligatorios etc). Dichas anotaciones se agregan en ciertos objetos de los Modelos->
+                <DataAnnotationsValidator/>
+                    <!--Cuando el admin guarde cambios, este data validara que vayan llenos los campos que no pueden ser nulos  (definidos en Modelos, Usuario)-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="code" class="col-sm-2 col-form-label">
+                    Código Producto
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                    <InputText id="code" class="form-control" @bind-Value="product.code" />
+                    <ValidationMessage For="@(() => product.code)" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <label for="description" class="col-sm-2 col-form-label">
+                    Descripción
+                </label>
+
+                <div class="col-sm-10">
+                    <InputText id="description" class="form-control" @bind-Value="product.description" />
+                    <ValidationMessage For="@(() => product.description)" />
+                </div>
+            </div>
+
+            <!--existencia-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="stock" class="col-sm-2 col-form-label">
+                    Existencia
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-1">
+                    <InputNumber id="Stock" class="form-control" @bind-Value="product.stock" />
+                </div>
+            </div>
+
+            <!--precio-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="price" class="col-sm-2 col-form-label">
+                    Precio
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-1">
+                    <InputNumber id="price" class="form-control" @bind-Value="product.price" />
+                </div>
+            </div>
+
+            <!--Foto-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="image" class="col-sm-2 col-form-label">
+                    Imagen
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                    <InputFile OnChange="@ElegirImagen"/>
+                    @if (product.image != null)
+                    {
+                        <!--src, source, encargado de pedir la ruta donde esta la imagen. Convirtiendo arreglo de bytes donde esta la foto a base64-->
+                        <img width="250" height="250" src="data: image; base64, @System.Convert.ToBase64String(product.image)" />
+                    }
+                    else
+                    {
+                        <img src="@imgUrl" width="250" height="250" />
+                    }
+                </div>
+            </div>
+
+            <!--Activo-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="activeProduct" class="col-sm-2 col-form-label">
+                    Activo
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                    <InputCheckbox @bind-Value="product.activeProduct" />
+                </div>
+            </div>
+
+            <!--Agregando etiqueta div que permite mostrar botones, es decir, agregando botones-->
+            <div class="form-group row">
+                <p>
+                    <input type="submit" class="btn btn-primary" value="Guardar" @onclick="Guardar" />
+                    <input type="submit" class="btn btn-danger" value="Cancelar" @onclick="Cancelar" />
+                </p>
+            </div>
+        </EditForm>
+    </Authorized>
+    <NotAuthorized>
+        <h3>No tiene permisos de administrador</h3>
+    </NotAuthorized>
+</AuthorizeView>

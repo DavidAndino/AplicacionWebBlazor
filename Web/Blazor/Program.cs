@@ -17,6 +17,7 @@ builder.Services.AddSingleton(Cadena);//configurando servicio: ahora se puede ut
 //configurando servicios de la clase "UsuarioServicio"
 builder.Services.AddScoped<ILoginServicio, LoginServicio>();//se le pasa la interfaz y la clase del servicio como parametros
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
+builder.Services.AddScoped<IProductoServicio, ProductoServicio>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();//pansando el servicio de tipo de autenticacion
 builder.Services.AddHttpContextAccessor();//sirve para poder acceder a los datos del  usuario que inicio sesion
 builder.Services.AddResponseCompression();

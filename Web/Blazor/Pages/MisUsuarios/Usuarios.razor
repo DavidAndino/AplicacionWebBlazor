@@ -7,6 +7,11 @@
     <!--pasando estado de la autenticacion hecha durante el login. Aqui se sabe  si esta autorizado o no-->
     <Authorized Context="AuthenticationState">
         <h3>Lista de usuarios</h3>
+        <div class="form-group-row">
+            <div class="col-sm-2">
+                <a href="/Usuarios/Nuevo" class="btn btn-primary m-2">Agregar Usuario</a>
+            </div>
+        </div>
         <!-- validando que la lista no este vacia-->
         @if (lista == null)
         {
@@ -25,6 +30,7 @@
                         <th>Rol</th>
                         <th>FechaCreacion</th>
                         <th>Activo</th>
+                        <th>Foto</th>
                     </tr>
                 </thead>
                 <!--Agregando cuerpo de la pagina-->
@@ -45,7 +51,18 @@
                             {
                                 <th><span class=" oi oi-circle-x" style="color: red;"></span></th>
                             }
-                            
+                            <!--validando que foto traiga algo-->
+                            @if (user.Photo != null)
+                            {
+                                <th>
+                                    <!--src, source, encargado de pedir la ruta donde esta la imagen. Convirtiendo arreglo de bytes donde esta la foto a base64-->
+                                    <img width="40" height="40" src="data: image; base64, @System.Convert.ToBase64String(user.Photo)"/>
+                                </th>
+                            }
+                            else
+                            {
+                                <th></th>
+                            }
                             <th>
                                 <a class="btn btn-success" href="@($"/Usuarios/Editar/{user.UserCode}")">Editar</a><!--"Editar" es el boton que se  aniade a la par  de  cada  usuario -->
                             </th>

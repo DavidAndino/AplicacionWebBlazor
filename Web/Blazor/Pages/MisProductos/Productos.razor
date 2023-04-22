@@ -1,0 +1,79 @@
+﻿@page "/Productos"
+@using Modelos
+<!--Impidiendo que el usuario normal pueda ingresar a la ruta de edicionde usuarios.  Como solo los admins deben acceder a la edicion,se le pasa solo el rol administrador-->
+<AuthorizeView Roles="Administrador">
+    <!--pasando estado de la autenticacion hecha durante el login. Aqui se sabe  si esta autorizado o no-->
+    <Authorized Context="AuthenticationState">
+        <h3>Lista de Productos</h3>
+        <div class="form-group-row">
+            <div class="col-sm-2">
+                <a href="/Productos/Nuevo" class="btn btn-primary m-2">Agregar Producto</a>
+            </div>
+        </div>
+        <!-- validando que la lista no este vacia-->
+        @if (listaProducts == null)
+        {
+            <p>No se han registrado productos en el sistema</p>
+        }
+        else
+        {
+            <table class="table">
+                <!--Agregando encabezado-->
+                <thead>
+                    <!--Agregando fila de encabezado con etiqueta "tr" y columnas con etiqueta "th"-->
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Descripcion</th>
+                        <th>Existencia</th>
+                        <th>Precio</th>
+                        <th>Imagen</th>
+                        <th>Activo</th>
+                    </tr>
+                </thead>
+                <!--Agregando cuerpo de la pagina-->
+                <tbody>
+                    @foreach (Producto item in listaProducts)
+                    {
+                        <tr>
+                            <th>@item.code</th>
+                            <th>@item.description</th>
+                            <th>@item.stock</th>
+                            <th>@item.price</th>
+                            <!--validando que imagen traiga algo-->
+                            @if (item.image != null)
+                            {
+                                <th>
+                                    <!--src, source, encargado de pedir la ruta donde esta la imagen. Convirtiendo arreglo de bytes donde esta la foto a base64-->
+                                    <img width="40" height="40" src="data: image; base64, @System.Convert.ToBase64String(item.image)" />
+                                </th>
+                            }
+                            else
+                            {
+                                <th></th>
+                            }
+
+                            <!--validando que el producto este activo traiga algo-->
+                            @if (item.activeProduct)
+                            {
+                                <th> <span class="oi oi-circle-check" style="color: deepskyblue;"></span></th>
+                            }
+                            else
+                            {
+                                <th><span class=" oi oi-circle-x" style="color: red;"></span></th>
+                            }
+                           
+                            <th>
+                                <a class="btn btn-success" href="@($"/Productos/Editar/{item.code}")">Editar</a><!--"Editar" es el boton que se  aniade a la par  de  cada  usuario -->
+                            </th>
+                            <th> <a class="btn btn-danger" href="@($"/Productos/Eliminar/{item.code}")">Eliminar</a></th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <h3>No tiene permisos de administrador</h3>
+    </NotAuthorized>
+</AuthorizeView>
+<!--un componente de blazor tiene dos componentes: uno de html y uno de c#-->

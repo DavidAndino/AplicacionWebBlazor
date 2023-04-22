@@ -104,6 +104,28 @@
                     <InputCheckbox @bind-Value="user.Active" />
                 </div>
             </div>
+
+            <!--Foto-->
+            <div class="form-group row">
+                <!--en esta  fila "row" van los siguientes campos. 2 cols para los label y  10 para los textbox y otros (esto segun bootstrap)-->
+                <label for="Photo" class="col-sm-2 col-form-label">
+                    Foto
+                </label>
+                <!--Abarcando las 10 cols restantes. El 1ro es el codigo de usuario mostrado mediante un label-->
+                <div class="col-sm-10">
+                        <InputFile OnChange="@ElegirImagen"/>
+                    @if(user.Photo != null)
+                    {
+                        <!--src, source, encargado de pedir la ruta donde esta la imagen. Convirtiendo arreglo de bytes donde esta la foto a base64-->
+                        <img width="40" height="40" src="data: image; base64, @System.Convert.ToBase64String(user.Photo)" />
+                    }
+                    else
+                    {
+                        <img src="@imgUrl" width="250" height="250"/>
+                    }
+                </div>
+            </div>
+
             <!--Agregando etiqueta div que permite mostrar botones, es decir, agregando botones-->
             <div class="form-group row">
                 <p>

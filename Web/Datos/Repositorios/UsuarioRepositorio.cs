@@ -65,7 +65,7 @@ namespace Datos.Repositorios
 
                 string sql = @"INSERT INTO user (UserCode, Name, Password, Mail, Role, CreationDate, Active, Photo)
                                 VALUES (@UserCode, @Name, @Password, @Mail, @Role, @CreationDate, @Active, @Photo);";
-                resultado = Convert.ToBoolean(await _conexion.ExecuteAsync(sql, new { user }));
+                resultado = Convert.ToBoolean(await _conexion.ExecuteAsync(sql, user));
             }
             catch (Exception)
             {
